@@ -1,5 +1,11 @@
 # direcciones_ar
 
+<p>
+  <a href="https://github.com/lucabaello1998/direcciones_ar/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/lucabaello1998/direcciones_ar/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="Dart 3" src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white">
+  <img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-green">
+</p>
+
 Autocompletado y geocodificación inversa de direcciones argentinas con
 [Nominatim](https://nominatim.openstreetmap.org/) (OpenStreetMap). Sin API key.
 
