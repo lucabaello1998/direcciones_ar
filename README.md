@@ -18,6 +18,10 @@ Autocompletado y geocodificación inversa de direcciones argentinas con
   (`ErrorDeGeocoding`), que es lo que permite decir "revisá tu conexión" en vez
   de "esa dirección no existe".
 
+![Salida real del ejemplo CLI](docs/ejemplo.png)
+
+Salida real de `dart run example/ejemplo.dart "rivadavia 5000 caballito"` (en esta corrida el servicio no respondió a tiempo).
+
 ## Instalar
 
 Todavía no está publicado en pub.dev. Como dependencia de git:
