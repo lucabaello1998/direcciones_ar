@@ -9,7 +9,7 @@
 Autocompletado y geocodificación inversa de direcciones argentinas con
 [Nominatim](https://nominatim.openstreetmap.org/) (OpenStreetMap). Sin API key.
 
-- **Buscar**: `italia 2274 caballito` → lista de direcciones con lat/lon.
+- **Buscar**: `rivadavia 5000 caballito` → lista de direcciones con lat/lon.
 - **Revertir**: tocás un punto del mapa → la dirección más cercana.
 - **Cachea** y **espacia** las llamadas para respetar la política de uso del
   servicio público (1 request por segundo).
@@ -36,18 +36,31 @@ import 'package:direcciones_ar/direcciones_ar.dart';
 final cliente = ClienteNominatim(); // userAgent propio incluido
 
 // Autocompletado
-final opciones = await cliente.buscar('italia 2274 caballito');
+final opciones = await cliente.buscar('rivadavia 5000 caballito');
 for (final opcion in opciones) {
   print('${opcion.direccionCorta} · ${opcion.detalle}');
-  // Italia 2274, Caballito · Caballito, Ciudad Autónoma de Buenos Aires, 1424, Argentina
+  // Avenida Rivadavia 5000, Caballito · Caballito, Buenos Aires, Ciudad Autónoma de Buenos Aires, C1424CER, Argentina
 }
 
 // Geocodificación inversa
-final direccion = await cliente.reversa(-34.610981, -58.433791);
-print(direccion?.direccionCorta); // Otamendi 500, Caballito
+final direccion = await cliente.reversa(-34.6183831, -58.4362001);
+print(direccion?.direccionCorta); // Avenida Rivadavia 5000, Caballito
 
 cliente.cerrar();
 ```
+
+Para probarlo sin escribir código, el ejemplo ejecutable hace una búsqueda y su
+reversa contra el servicio real (necesita internet):
+
+```bash
+dart run example/ejemplo.dart "rivadavia 5000 caballito"
+```
+
+> **Sobre las consultas:** Nominatim busca texto libre, no direcciones
+> estructuradas. Una altura que no existe en OpenStreetMap devuelve lista vacía
+> (no un error), y una palabra que contradice al resto — `corrientes 1234
+> caballito` — también. Si te interesa si hay resultados, es lista vacía; si el
+> servicio falló, es `ErrorDeGeocoding`.
 
 ### En Flutter
 
@@ -79,6 +92,11 @@ faltar en otros clientes:
 | `detalle` | `Caballito, Ciudad Autónoma de Buenos Aires, 1424, Argentina` |
 | `etiqueta` | el `display_name` original |
 
+`direccionCorta` prefiere el **barrio** antes que la localidad: en CABA la
+localidad es "Ciudad Autónoma de Buenos Aires" para las 15 comunas, así que
+mostrarla no distingue nada. Si el resultado no trae barrio, usa la localidad
+(`Avenida Colón 100, Córdoba`).
+
 `esUbicable` es `false` cuando el resultado no trae coordenadas, así se puede
 descartar antes de mostrarlo.
 
@@ -106,14 +124,40 @@ Nominatim es gratis y lo mantiene la comunidad. Si vas a producción con volumen
 
 Ver la [política de uso](https://operations.osmfoundation.org/policies/nominatim/).
 
-## Tests
+## Tests y CI
 
 ```bash
 dart pub get
-dart test
+dart format --output=none --set-exit-if-changed .   # lo mismo que corre el CI
+dart analyze --fatal-infos
+dart test                                            # 18 tests
 ```
 
-Los tests usan `MockClient` de `package:http`: no pegan al servicio real.
+Los tests usan `MockClient` de `package:http`: no pegan al servicio real, así que
+corren sin internet y sin gastar el rate limit de Nominatim. El workflow
+`.github/workflows/ci.yml` corre esos tres comandos en cada push y PR.
+
+## Publicar en pub.dev
+
+Todavía no está publicado. Para publicarlo:
+
+```bash
+# 1. subí la versión en pubspec.yaml y anotá el cambio en CHANGELOG.md
+# 2. verificá que el paquete esté completo antes de subirlo
+dart pub publish --dry-run
+# 3. publicá (abre el navegador para autenticarte la primera vez)
+dart pub publish
+```
+
+`--dry-run` es el paso que importa: avisa si falta el `CHANGELOG`, si el
+`description` o el `README.md` no cumplen lo que pide pub.dev, o si se está por
+subir algo que no debería (`.dart_tool/`, archivos enormes). Después del primer
+publish, la dependencia de git del principio se puede reemplazar por:
+
+```yaml
+dependencies:
+  direcciones_ar: ^0.2.0
+```
 
 ## Licencia
 

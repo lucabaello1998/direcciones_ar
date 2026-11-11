@@ -3,7 +3,7 @@ description: >-
   Autocompletado y geocodificación inversa de direcciones argentinas con
   Nominatim (OpenStreetMap): caché, límite de requests y parseo de la dirección
   en calle, altura, barrio y localidad.
-version: 0.1.0
+version: 0.2.0
 repository: https://github.com/lucabaello1998/direcciones_ar
 issue_tracker: https://github.com/lucabaello1998/direcciones_ar/issues
 

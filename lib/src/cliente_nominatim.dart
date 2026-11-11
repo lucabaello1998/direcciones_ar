@@ -37,7 +37,7 @@ class ClienteNominatim {
     http.Client? cliente,
     this.pais = 'ar',
     this.userAgent =
-        'direcciones_ar/0.1 (+https://github.com/lucabaello1998/direcciones_ar)',
+        'direcciones_ar/0.2 (+https://github.com/lucabaello1998/direcciones_ar)',
     this.intervaloMinimo = const Duration(milliseconds: 1100),
     this.tiempoMaximo = const Duration(seconds: 8),
     this.cacheMaximo = 200,

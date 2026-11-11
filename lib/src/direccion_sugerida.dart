@@ -84,11 +84,15 @@ class DireccionSugerida {
   ///
   /// Si el servicio no devolvió la calle, cae al primer tramo de [etiqueta]. No
   /// repite la localidad cuando ya está en el nombre de la vía.
+  ///
+  /// El barrio va antes que la localidad a propósito: en CABA la localidad es
+  /// "Ciudad Autónoma de Buenos Aires" para las 15 comunas, así que mostrarla no
+  /// distingue nada ("Rivadavia 5000, Ciudad Autónoma de Buenos Aires" podría ser
+  /// cualquier punto de la ciudad). El barrio sí. La localidad queda para cuando
+  /// el resultado no trae barrio.
   String get direccionCorta {
     final via = calleYAltura.isNotEmpty ? calleYAltura : _primerTramo(etiqueta);
-    // Si el servicio no devolvió la ciudad, el barrio es la mejor referencia
-    // (pasa seguido en localidades chicas o en resultados dentro de CABA).
-    final lugar = (localidad ?? barrio)?.trim() ?? '';
+    final lugar = (barrio ?? localidad)?.trim() ?? '';
     final partes = <String>[
       if (via.isNotEmpty) via,
       if (lugar.isNotEmpty && !via.toLowerCase().contains(lugar.toLowerCase()))

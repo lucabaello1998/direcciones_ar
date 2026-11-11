@@ -54,8 +54,7 @@ void main() {
     expect(parametros?['countrycodes'], 'ar');
     expect(parametros?['limit'], '5');
     expect(resultados, hasLength(1));
-    expect(resultados.single.direccionCorta,
-        'Italia 2274, Ciudad Autónoma de Buenos Aires');
+    expect(resultados.single.direccionCorta, 'Italia 2274, Caballito');
   });
 
   test('texto vacío no hace ninguna request', () async {

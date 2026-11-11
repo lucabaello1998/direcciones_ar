@@ -49,8 +49,7 @@ void main() {
       expect(direccion.localidad, 'Ciudad Autónoma de Buenos Aires');
       expect(direccion.codigoPostal, '1424');
       expect(direccion.calleYAltura, 'Italia 2274');
-      expect(direccion.direccionCorta,
-          'Italia 2274, Ciudad Autónoma de Buenos Aires');
+      expect(direccion.direccionCorta, 'Italia 2274, Caballito');
       expect(direccion.esUbicable, isTrue);
     });
 
@@ -108,8 +107,31 @@ void main() {
       final direccion = DireccionSugerida.desdeNominatim(_reversa);
 
       expect(direccion.calleYAltura, 'Otamendi 500');
-      expect(direccion.direccionCorta,
-          'Otamendi 500, Ciudad Autónoma de Buenos Aires');
+      expect(direccion.direccionCorta, 'Otamendi 500, Caballito');
+    });
+
+    test('prefiere el barrio a la ciudad cuando los dos existen', () {
+      // Reversa real de Rivadavia al 5000: city = "Buenos Aires" para toda la
+      // ciudad, suburb = "Caballito" para el barrio. Antes la ficha decía
+      // "Avenida Rivadavia 5000, Buenos Aires", que no distingue nada.
+      final direccion = DireccionSugerida.desdeNominatim({
+        'lat': '-34.6183831',
+        'lon': '-58.4362001',
+        'display_name':
+            'Army, 5000, Avenida Rivadavia, Caballito, Buenos Aires, Comuna 6, Ciudad Aut\u00f3noma de Buenos Aires, C1424CER, Argentina',
+        'address': {
+          'house_number': '5000',
+          'road': 'Avenida Rivadavia',
+          'suburb': 'Caballito',
+          'city': 'Buenos Aires',
+          'state': 'Ciudad Aut\u00f3noma de Buenos Aires',
+          'postcode': 'C1424CER',
+          'country': 'Argentina',
+        },
+      });
+
+      expect(direccion.direccionCorta, 'Avenida Rivadavia 5000, Caballito');
+      expect(direccion.localidad, 'Buenos Aires');
     });
 
     test('sin coordenadas no es ubicable', () {
