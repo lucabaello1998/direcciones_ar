@@ -20,7 +20,7 @@ Autocompletado y geocodificación inversa de direcciones argentinas con
 
 ![Salida real del ejemplo CLI](docs/ejemplo.png)
 
-Salida real de `dart run example/ejemplo.dart "rivadavia 5000 caballito"` (en esta corrida el servicio no respondió a tiempo).
+Salida real de `dart run example/ejemplo.dart "rivadavia 5000 caballito"`: dos coincidencias y la reversa del primer resultado.
 
 ## Instalar
 
